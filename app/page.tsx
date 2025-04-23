@@ -126,7 +126,7 @@ export default function Home() {
               Home
             </Link>
 
-            <Link href="#herbal-products" className="font-medium hover:text-green-700 transition-colors">
+            <Link href="/herbal-products" className="font-medium hover:text-green-700 transition-colors">
               Herbal Products
             </Link>
             <Link href="#consultation" className="font-medium hover:text-green-700 transition-colors">
