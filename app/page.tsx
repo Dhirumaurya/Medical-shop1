@@ -378,21 +378,21 @@ export default function Home() {
                       name: "Dr. Arjun Sharma",
                       specialty: "Ayurvedic Medicine",
                       experience: "15+ years experience",
-                      image: "/placeholder.svg?height=400&width=400",
+                      image: "/team-1.jpg",
                       bio: "Dr. Sharma specializes in traditional Ayurvedic treatments for chronic conditions and stress management.",
                     },
                     {
                       name: "Dr. Priya Patel",
                       specialty: "Panchakarma Specialist",
                       experience: "12+ years experience",
-                      image: "/placeholder.svg?height=400&width=400",
+                      image: "/team-2.jpg",
                       bio: "Dr. Patel is an expert in detoxification therapies and rejuvenation treatments based on Ayurvedic principles.",
                     },
                     {
                       name: "Dr. Rahul Verma",
                       specialty: "Ayurvedic Nutrition",
                       experience: "10+ years experience",
-                      image: "/placeholder.svg?height=400&width=400",
+                      image: "/team-3.jpg",
                       bio: "Dr. Verma focuses on dietary interventions and herbal supplements to address digestive and metabolic issues.",
                     },
                   ].map((doctor, index) => (
@@ -530,7 +530,7 @@ export default function Home() {
               </div>
               <div className="relative h-[400px] rounded-lg overflow-hidden">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="/ayurvedalife.jpeg"
                   alt="Ayurvedic ingredients and preparation"
                   fill
                   className="object-cover"
