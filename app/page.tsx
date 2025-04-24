@@ -5,88 +5,23 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Leaf,
-  Star,
-  Heart,
-  Shield,
-  ArrowRight,
-  ShoppingBag,
-  Calendar,
-  Video,
-  User,
-  ChevronRight,
-  ArrowLeft,
-} from "lucide-react"
+import { Leaf, Star, Heart, Shield, ArrowRight, ShoppingBag, Calendar, Video, User } from "lucide-react"
 import { DoctorCard } from "@/components/doctor-card"
 import { AppointmentForm } from "@/components/appointment-form"
-import { useState } from "react"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import Slider from "react-slick"
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("")
-
-  // Handle search item click
-  const handleClick = (item: string) => {
-    setSearchQuery(item)
-    // You can add additional logic here, like redirecting to search results
-    console.log(`Searching for: ${item}`)
-  }
-
-  // Custom Next Arrow for the slider
-  const NextArrow = ({ onClick }: { onClick?: () => void }) => {
-    return (
-      <button
-        onClick={onClick}
-        className="absolute right-0 -top-12 bg-green-700 text-white rounded-full p-2 hover:bg-green-800 transition-colors z-10"
-      >
-        <ArrowRight className="w-6 h-6" />
-      </button>
-    )
-  }
-
-  // Custom Prev Arrow for the slider
-  const PrevArrow = ({ onClick }: { onClick?: () => void }) => {
-    return (
-      <button
-        onClick={onClick}
-        className="absolute right-12 -top-12 bg-green-700 text-white rounded-full p-2 hover:bg-green-800 transition-colors z-10"
-      >
-        <ArrowLeft className="w-6 h-6" />
-      </button>
-    )
-  }
-
-  const searchItems = [
-    { rank: "#1", label: "Ghee" },
-    { rank: "#2", label: "Amla" },
-    { rank: "#3", label: "Giloy" },
-    { rank: "#4", label: "Honey" },
-    { rank: "#5", label: "Atta" },
-    { rank: "#6", label: "Cooking Oil" },
-    { rank: "#7", label: "Eye Care" },
-    { rank: "#8", label: "Ashwagandha" },
-    { rank: "#9", label: "Brahmi" },
-    { rank: "#10", label: "Hair oil" },
-    { rank: "#11", label: "Maka" },
-    { rank: "#12", label: "jestimath" },
-    { rank: "#13", label: "Allovera" },
-    { rank: "#14", label: "Pith" },
-    { rank: "#15", label: "aawala" },
-    { rank: "#16", label: "creame" },
-  ]
-
-  // Slider settings
+  const router = useRouter();
+  // Slider settings without custom arrows
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -179,6 +114,13 @@ export default function Home() {
               >
                 Book Consultation
               </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full text-yellow-400 border border-yellow-400 hover:bg-white/10"
+              >
+                Learn About Ayurveda
+              </Button>
             </div>
           </div>
         </section>
@@ -219,6 +161,7 @@ export default function Home() {
                   {benefit.icon}
                   <h3 className="mt-4 text-xl font-semibold text-green-800">{benefit.title}</h3>
                   <p className="mt-2 text-gray-600">{benefit.description}</p>
+                  <Button className="mt-4 rounded-full bg-green-600 hover:bg-green-700 text-sm">Learn More</Button>
                 </div>
               ))}
             </div>
@@ -235,7 +178,7 @@ export default function Home() {
                   Our bestselling Ayurvedic formulations for your daily wellness routine.
                 </p>
               </div>
-              <Link href="#" className="text-green-600 hover:text-green-700 flex items-center gap-2 font-medium">
+              <Link href="/herbal-products" className="text-green-600 hover:text-green-700 flex items-center gap-2 font-medium">
                 View All Products <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -306,50 +249,12 @@ export default function Home() {
 
               {/* Add buttons for Featured Products slider */}
               <div className="flex justify-center gap-4 mt-6">
-                <Button variant="outline" className="rounded-full border-green-600 text-green-700 hover:bg-green-50">
+                <Button variant="outline" className="rounded-full border-green-600 text-green-700 hover:bg-green-50" onClick={() => router.push('/herbal-products')}>
                   View All Products
                 </Button>
                 <Button className="rounded-full bg-green-600 hover:bg-green-700">Shop Now</Button>
+                <Button className="rounded-full bg-amber-600 hover:bg-amber-700">Special Offers</Button>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Search section with Slider */}
-        <section className="py-12 bg-white">
-          <div className="container p-4 max-w-6xl mx-auto relative">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-green-900">Most Searched</h2>
-            </div>
-
-            <Slider {...settings} className="mb-8">
-              {searchItems.slice(0, 8).map((item, index) => (
-                <div key={index} className="px-2">
-                  <button
-                    onClick={() => handleClick(item.label)}
-                    className="flex items-center justify-between w-full px-4 py-3 bg-green-100 text-gray-800 rounded-full hover:bg-green-200 transition-colors"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <span className="bg-green-700 text-white rounded-full w-8 h-8 flex items-center justify-center">
-                        {item.rank}
-                      </span>
-                      <span>{item.label}</span>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-gray-500" />
-                  </button>
-                </div>
-              ))}
-            </Slider>
-
-            {/* Add "View All" and "Shop Now" buttons */}
-            <div className="flex justify-center gap-4 mt-6">
-              <Button
-                variant="outline"
-                className="rounded-full border-green-600 text-green-700 hover:bg-green-50 px-6 py-2 font-medium"
-              >
-                View All Items
-              </Button>
-              <Button className="rounded-full bg-green-600 hover:bg-green-700 px-6 py-2 font-medium">Shop Now</Button>
             </div>
           </div>
         </section>
@@ -399,9 +304,7 @@ export default function Home() {
                     <DoctorCard key={index} doctor={doctor} />
                   ))}
                 </div>
-                <div className="flex justify-center mt-8">
-                  <Button className="rounded-full bg-green-600 hover:bg-green-700">View All Practitioners</Button>
-                </div>
+               
               </TabsContent>
 
               <TabsContent value="appointment">
@@ -498,10 +401,17 @@ export default function Home() {
                   <div className="absolute inset-0 z-20 flex flex-col justify-end p-6">
                     <h3 className="text-xl font-bold">{category.title}</h3>
                     <p className="mt-2 text-gray-200">{category.description}</p>
-                    <Button className="mt-4 bg-white text-green-900 hover:bg-gray-100 w-fit">Explore</Button>
+                    <div className="flex gap-3 mt-4">
+                      <Button className="bg-white text-green-900 hover:bg-gray-100 w-fit">Explore</Button>
+                      <Button className="bg-amber-500 text-white hover:bg-amber-600 w-fit">Best Sellers</Button>
+                    </div>
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="flex justify-center gap-4 mt-10">
+              <Button className="rounded-full bg-white text-green-900 hover:bg-gray-100">View All Categories</Button>
+              <Button className="rounded-full bg-amber-500 hover:bg-amber-600">New Arrivals</Button>
             </div>
           </div>
         </section>
@@ -521,12 +431,7 @@ export default function Home() {
                   At Ayurveda Haven, we honor this ancient tradition by offering authentic products made according to
                   traditional methods, using ingredients sourced from their native regions.
                 </p>
-                <div className="mt-6 flex flex-wrap gap-4">
-                  <Button className="rounded-full bg-green-600 hover:bg-green-700">Our Philosophy</Button>
-                  <Button variant="outline" className="rounded-full">
-                    Learn More
-                  </Button>
-                </div>
+                
               </div>
               <div className="relative h-[400px] rounded-lg overflow-hidden">
                 <Image
@@ -596,6 +501,7 @@ export default function Home() {
                 </Card>
               ))}
             </div>
+           
           </div>
         </section>
 
@@ -619,6 +525,7 @@ export default function Home() {
               <p className="mt-4 text-sm text-gray-300">
                 By subscribing, you agree to our Privacy Policy and consent to receive our marketing emails.
               </p>
+
             </div>
           </div>
         </section>
@@ -699,10 +606,25 @@ export default function Home() {
                 <p className="mt-4">info@ayurvedahaven.com</p>
                 <p>+1 (555) 123-4567</p>
               </address>
+              <div className="mt-4 flex gap-3">
+                <Button className="rounded-full bg-green-600 hover:bg-green-700 text-sm">Email Us</Button>
+                <Button className="rounded-full bg-blue-600 hover:bg-blue-700 text-sm">Live Chat</Button>
+              </div>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-green-800 text-center text-gray-400 text-sm">
             <p>© {new Date().getFullYear()} Ayurveda Haven. All rights reserved.</p>
+            <div className="flex justify-center gap-4 mt-4">
+              <Button variant="outline" className="rounded-full text-sm">
+                Privacy Policy
+              </Button>
+              <Button variant="outline" className="rounded-full text-sm">
+                Terms of Service
+              </Button>
+              <Button variant="outline" className="rounded-full text-sm">
+                Sitemap
+              </Button>
+            </div>
           </div>
         </div>
       </footer>
