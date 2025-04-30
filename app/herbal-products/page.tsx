@@ -15,7 +15,6 @@ interface Product {
 
 // Product Data
 const products: Product[] = [
-  // Tablets
   {
     id: 1,
     name: "Ashwagandha Capsules",
@@ -53,7 +52,7 @@ const products: Product[] = [
     name: "Brahmi Tablets",
     price: 22.99,
     category: "Tablet",
-    image:"https://images.unsplash.com/photo-1576092768241-dec231879fc3",
+    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3",
     description: "Rich source of protein and vitamins",
   },
   {
@@ -61,7 +60,7 @@ const products: Product[] = [
     name: "giloy Tablets",
     price: 22.99,
     category: "Tablet",
-    image:"https://images.unsplash.com/photo-1576092768241-dec231879fc3",
+    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3",
     description: "Rich source of protein and vitamins",
   },
   {
@@ -69,11 +68,11 @@ const products: Product[] = [
     name: "jestimath Tablets",
     price: 22.99,
     category: "Tablet",
-    image:"https://images.unsplash.com/photo-1576092768241-dec231879fc3",
+    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3",
     description: "Rich source of protein and vitamins",
   },
   {
-    id:26 ,
+    id: 26,
     name: "shatvari Tablets",
     price: 22.99,
     category: "Tablet",
@@ -81,15 +80,13 @@ const products: Product[] = [
     description: "Rich source of protein and vitamins",
   },
   {
-    id:27 ,
+    id: 27,
     name: "maka Tablets",
     price: 22.99,
     category: "Tablet",
-    image:"https://images.unsplash.com/photo-1576092768241-dec231879fc3",
+    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3",
     description: "Rich source of protein and vitamins",
   },
-
-  // Powder
   {
     id: 5,
     name: "Triphala Powder",
@@ -122,8 +119,6 @@ const products: Product[] = [
     image: "https://images.unsplash.com/photo-1620712943530-122c56c5b789",
     description: "Balances hormones",
   },
-
-  // Oil
   {
     id: 9,
     name: "Brahmi Oil",
@@ -156,8 +151,6 @@ const products: Product[] = [
     image: "https://images.unsplash.com/photo-1619024889979-3b177fd9fef0",
     description: "Great for scalp and acne",
   },
-
-  // Facewash
   {
     id: 7,
     name: "Neem Facewash",
@@ -230,8 +223,6 @@ const products: Product[] = [
     image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c",
     description: "Cleanses and purifies skin",
   },
-
-  // Cream
   {
     id: 10,
     name: "Shilajit Cream",
@@ -261,7 +252,7 @@ const products: Product[] = [
     name: "Aloe Night Cream",
     price: 26.99,
     category: "Cream",
-    image:"https://images.unsplash.com/photo-1608245449230-4ac19066d2d0",
+    image: "https://images.unsplash.com/photo-1608245449230-4ac19066d2d0",
     description: "Hydrates overnight",
   },
 ]
@@ -269,7 +260,13 @@ const products: Product[] = [
 export default function HerbalProductsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortOption, setSortOption] = useState("default")
-  const [modalProduct, setModalProduct] = useState<Product | null>(null)
+  const [cart, setCart] = useState<Product[]>([])
+
+  // Function to handle adding product to cart
+  const handleAddToCart = (product: Product) => {
+    setCart((prevCart) => [...prevCart, product])
+    console.log(`${product.name} added to cart! Cart now has ${cart.length + 1} items.`)
+  }
 
   const filteredProducts = products
     .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -288,7 +285,7 @@ export default function HerbalProductsPage() {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-green-800">{title}</h2>
         </div>
-        <CategorySlider products={categoryProducts} onProductClick={setModalProduct} />
+        <CategorySlider products={categoryProducts} onAddToCart={handleAddToCart} />
       </div>
     )
   }
@@ -347,29 +344,6 @@ export default function HerbalProductsPage() {
         {renderCategory("Oil", "Oil")}
         {renderCategory("Facewash", "Facewash")}
         {renderCategory("Cream", "Cream")}
-
-        {/* Modal */}
-        {modalProduct && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded shadow max-w-lg w-full">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-green-700">{modalProduct.name}</h3>
-                <button onClick={() => setModalProduct(null)} className="text-2xl">
-                  ×
-                </button>
-              </div>
-              <Image
-                src={modalProduct.image || "/placeholder.svg"}
-                alt={modalProduct.name}
-                width={500}
-                height={300}
-                className="mb-4 w-full object-cover"
-              />
-              <p>{modalProduct.description}</p>
-              <p className="mt-2 font-bold text-green-700">${modalProduct.price}</p>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -378,8 +352,11 @@ export default function HerbalProductsPage() {
 // CategorySlider Component
 function CategorySlider({
   products,
-  onProductClick,
-}: { products: Product[]; onProductClick: (product: Product) => void }) {
+  onAddToCart,
+}: {
+  products: Product[]
+  onAddToCart: (product: Product) => void
+}) {
   const sliderRef = useRef<HTMLDivElement>(null)
 
   const scroll = (direction: "left" | "right") => {
@@ -406,7 +383,7 @@ function CategorySlider({
       >
         {products.map((product) => (
           <div key={product.id} className="flex-none w-[250px]">
-            <ProductCard product={product} onClick={() => onProductClick(product)} />
+            <ProductCard product={product} onAddToCart={() => onAddToCart(product)} />
           </div>
         ))}
       </div>
@@ -423,7 +400,7 @@ function CategorySlider({
 }
 
 // ProductCard Component
-function ProductCard({ product, onClick }: { product: Product; onClick: () => void }) {
+function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: () => void }) {
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden h-full">
       <div className="h-48 overflow-hidden">
@@ -441,10 +418,10 @@ function ProductCard({ product, onClick }: { product: Product; onClick: () => vo
         <div className="flex justify-between items-center mt-4">
           <span className="font-bold text-green-700">${product.price}</span>
           <button
-            onClick={onClick}
+            onClick={onAddToCart}
             className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors"
           >
-            Quick View
+            Add to Cart
           </button>
         </div>
       </div>

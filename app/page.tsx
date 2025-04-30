@@ -5,18 +5,33 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Leaf, Star, Heart, Shield, ArrowRight, ShoppingBag, Calendar, Video, User } from "lucide-react"
-import { DoctorCard } from "@/components/doctor-card"
-import { AppointmentForm } from "@/components/appointment-form"
+import {
+  Leaf,
+  Star,
+  Heart,
+  Shield,
+  ArrowRight,
+  ShoppingBag,
+  Calendar,
+  Video,
+  User,
+  Menu,
+  X,
+  Sun,
+  Snowflake,
+} from "lucide-react"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import Slider from "react-slick"
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function Home() {
-  const router = useRouter();
-  // Slider settings without custom arrows
-  const settings = {
+  const router = useRouter()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Slider settings for Featured Products
+  const productSliderSettings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -47,25 +62,98 @@ export default function Home() {
     ],
   }
 
+  // Slider settings for Partner Logos (auto-playing)
+  const partnerSliderSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  }
+
+  // Partner companies data
+  const partners = [
+    {
+      name: "Dhootpapeshwar",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Sandu",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Baidyanath",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Patanjali",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Dabur",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Herbal Harmony",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Pure Roots",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Nature’s Blend",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Ayur Essence",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+    {
+      name: "Green Vitality",
+      logo: "https://images.unsplash.com/photo-1509721434275-b92628b9d1d4",
+    },
+  ]
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-20 items-center justify-between">
           <div className="flex items-center gap-2">
-            {/* <Leaf className="h-6 w-6 text-green-600" />
-            <span className="text-xl font-bold">Ayurveda Haven</span> */}
             <Image src="/logo.png" alt="Ayurveda Haven Logo" width={150} height={150} className="h-24 w-auto" />
           </div>
           <nav className="hidden md:flex gap-6 font-serif text-lg">
             <Link href="#" className="font-medium hover:text-green-700 transition-colors">
               Home
             </Link>
-
             <Link href="/herbal-products" className="font-medium hover:text-green-700 transition-colors">
               Herbal Products
-            </Link>
-            <Link href="#consultation" className="font-medium hover:text-green-700 transition-colors">
-              Book Consultation
             </Link>
             <Link href="#doctors" className="font-medium hover:text-green-700 transition-colors">
               Our Experts
@@ -73,21 +161,84 @@ export default function Home() {
             <Link href="#wellness" className="font-medium hover:text-green-700 transition-colors">
               Wellness Programs
             </Link>
-
-            <Link href="#contact" className="font-medium hover:text-green-700 transition-colors">
+            <Link href="/contact-page" className="font-medium hover:text-green-700 transition-colors">
               Contact
             </Link>
           </nav>
-
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" className="rounded-full">
-              <ShoppingBag className="h-4 w-4" />
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 sm:h-10 sm:w-10 rounded-full"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+            <Button variant="outline" size="icon" className="h-8 w-8 sm:h-10 sm:w-10 rounded-full">
+              <ShoppingBag className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="sr-only">Shopping cart</span>
             </Button>
-            <Button className="rounded-full bg-green-600 hover:bg-green-700">Shop Now</Button>
+            <Button className="rounded-full bg-green-600 hover:bg-green-700 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+              Shop Now
+            </Button>
           </div>
         </div>
       </header>
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div className="fixed inset-0 bg-black/25" onClick={() => setMobileMenuOpen(false)}></div>
+          <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-white px-6 py-6 overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Leaf className="h-6 w-6 text-green-600" />
+                <span className="text-xl font-bold">Ayurveda Haven</span>
+              </div>
+              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10 rounded-full" onClick={() => setMobileMenuOpen(false)}>
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="sr-only">Close menu</span>
+              </Button>
+            </div>
+            <nav className="flex flex-col space-y-4 font-serif text-lg">
+              <Link
+                href="#"
+                className="font-medium hover:text-green-700 transition-colors py-2 border-b border-gray-100"
+              >
+                Home
+              </Link>
+              <Link
+                href="/herbal-products"
+                className="font-medium hover:text-green-700 transition-colors py-2 border-b border-gray-100"
+              >
+                Herbal Products
+              </Link>
+              <Link
+                href="#doctors"
+                className="font-medium hover:text-green-700 transition-colors py-2 border-b border-gray-100"
+              >
+                Our Experts
+              </Link>
+              <Link
+                href="#wellness"
+                className="font-medium hover:text-green-700 transition-colors py-2 border-b border-gray-100"
+              >
+                Wellness Programs
+              </Link>
+              <Link
+                href="/contact-page"
+                className="font-medium hover:text-green-700 transition-colors py-2 border-b border-gray-100"
+              >
+                Contact
+              </Link>
+            </nav>
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <Button className="w-full rounded-full bg-green-600 hover:bg-green-700 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+                Shop Now
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative">
@@ -100,27 +251,231 @@ export default function Home() {
               Ancient Wisdom for Modern Wellness
             </h1>
             <p className="max-w-xl text-lg text-gray-200">
-              Discover the power of Ayurveda with our premium selection of authentic herbs, supplements, and
-              personalized consultations.
+              Discover the power of Ayurveda with our premium selection of authentic herbs, supplements, and personalized consultations.
             </p>
-            <div className="flex flex-wrap gap-4 mt-4">
-              <Button size="lg" className="rounded-full bg-green-600 hover:bg-green-700">
+            <div className="flex flex-wrap gap-2 sm:gap-4 mt-4">
+              <Button className="rounded-full bg-green-600 hover:bg-green-700 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
                 Shop Collection
               </Button>
               <Button
-                size="lg"
                 variant="outline"
-                className="rounded-full text-blue-500 border border-blue-500 hover:bg-white/10"
-              >
-                Book Consultation
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-full text-yellow-400 border border-yellow-400 hover:bg-white/10"
+                className="rounded-full text-yellow-400 border-yellow-400 hover:bg-white/10 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base"
               >
                 Learn About Ayurveda
               </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Seasonal Feature Section */}
+        <section className="py-16 bg-gradient-to-b from-green-50 to-white">
+          <div className="container">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tight text-green-900 sm:text-4xl">
+                Seasonal Ayurvedic Wellness
+              </h2>
+              <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+                Discover products specially formulated for each season to maintain your dosha balance and optimal health.
+              </p>
+            </div>
+
+            <Tabs defaultValue="summer" className="w-full">
+              <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+                <TabsTrigger value="summer" className="flex items-center gap-2 text-sm sm:text-base">
+                  <Sun className="h-4 w-4 sm:h-5 sm:w-5" /> Summer Season
+                </TabsTrigger>
+                <TabsTrigger value="winter" className="flex items-center gap-2 text-sm sm:text-base">
+                  <Snowflake className="h-4 w-4 sm:h-5 sm:w-5" /> Winter Season
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="summer" className="space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                  {[
+                    {
+                      name: "Cooling Aloe Vera Gel",
+                      price: "$19.99",
+                      image: "/placeholder.svg?height=300&width=300",
+                      description: "Soothes pitta dosha and provides relief from summer heat",
+                      tag: "Bestseller",
+                    },
+                    {
+                      name: "Rose Water Mist",
+                      price: "$14.99",
+                      image: "/placeholder.svg?height=300&width=300",
+                      description: "Refreshing facial mist to balance skin in hot weather",
+                      tag: "New",
+                    },
+                    {
+                      name: "Coconut & Mint Cooling Oil",
+                      price: "$24.99",
+                      image: "/placeholder.svg?height=300&width=300",
+                      description: "Cools the body and calms the mind during summer months",
+                      tag: "Popular",
+                    },
+                    {
+                      name: "Amla & Neem Juice",
+                      price: "$22.99",
+                      image: "/placeholder.svg?height=300&width=300",
+                      description: "Detoxifying blend to purify blood and boost immunity",
+                      tag: "Organic",
+                    },
+                    {
+                      name: "Sandalwood Body Powder",
+                      price: "$18.99",
+                      image: "/placeholder.svg?height=300&width=300",
+                      description: "Natural cooling powder to prevent heat rashes and odor",
+                      tag: "Limited",
+                    },
+                  ].map((product, index) => (
+                    <Card key={index} className="overflow-hidden border-0 shadow-sm h-full">
+                      <div className="relative">
+                        <div className="relative h-48 bg-gray-100">
+                          <Image
+                            src={product.image || "/placeholder.svg"}
+                            alt={product.name}
+                            fill
+                            className="object-cover transition-transform hover:scale-105"
+                          />
+                        </div>
+                        {product.tag && (
+                          <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                            {product.tag}
+                          </div>
+                        )}
+                      </div>
+                      <CardContent className="p-4">
+                        <div className="text-sm text-green-600 font-medium mb-1">Summer Essential</div>
+                        <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                        <p className="text-sm text-gray-600 mb-3">{product.description}</p>
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-green-800">{product.price}</span>
+                          <Button className="rounded-full bg-green-600 hover:bg-green-700 px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
+                            Add to Cart
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                <div className="flex justify-center mt-8">
+                  <Button className="rounded-full bg-amber-600 hover:bg-amber-700 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+                    View All Summer Products
+                  </Button>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="winter" className="space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                  {[
+                    {
+                      name: "Warming Chyawanprash",
+                      price: "$27.99",
+                      image: "/chawanprash.jpeg",
+                      description: "Traditional immunity booster with warming herbs for winter",
+                      tag: "Bestseller",
+                    },
+                    {
+                      name: "Tulsi & Ginger Tea",
+                      price: "$16.99",
+                      image: "/placeholder.svg?height=300&width=300",
+                      description: "Herbal tea blend to fight cold and boost respiratory health",
+                      tag: "Immunity",
+                    },
+                    {
+                      name: "Sesame Body Oil",
+                      price: "$29.99",
+                      image: "/placeholder.svg?height=300&width=300",
+                      description: "Nourishing oil for abhyanga massage during dry winter months",
+                      tag: "Moisturizing",
+                    },
+                    {
+                      name: "Ashwagandha Root Powder",
+                      price: "$24.99",
+                      image: "/Ashwagandha.jpeg",
+                      description: "Adaptogenic herb to combat winter stress and boost energy",
+                      tag: "Energy",
+                    },
+                    {
+                      name: "Triphala Formula",
+                      price: "$19.99",
+                      image: "/Triphala.jpeg",
+                      description: "Digestive support for heavier winter foods and metabolism",
+                      tag: "Digestion",
+                    },
+                  ].map((product, index) => (
+                    <Card key={index} className="overflow-hidden border-0 shadow-sm h-full">
+                      <div className="relative">
+                        <div className="relative h-48 bg-gray-100">
+                          <Image
+                            src={product.image || "/placeholder.svg"}
+                            alt={product.name}
+                            fill
+                            className="object-cover transition-transform hover:scale-105"
+                          />
+                        </div>
+                        {product.tag && (
+                          <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                            {product.tag}
+                          </div>
+                        )}
+                      </div>
+                      <CardContent className="p-4">
+                        <div className="text-sm text-blue-600 font-medium mb-1">Winter Essential</div>
+                        <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                        <p className="text-sm text-gray-600 mb-3">{product.description}</p>
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-blue-800">{product.price}</span>
+                          <Button className="rounded-full bg-blue-600 hover:bg-blue-700 px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
+                            Add to Cart
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                <div className="flex justify-center mt-8">
+                  <Button className="rounded-full bg-blue-600 hover:bg-blue-700 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+                    View All Winter Products
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            <div className="mt-12 bg-green-50 rounded-2xl p-8 text-center">
+              <h3 className="text-2xl font-bold text-green-900 mb-4">Why Seasonal Ayurveda Matters</h3>
+              <p className="text-gray-700 max-w-3xl mx-auto">
+                According to Ayurvedic principles, each season affects our doshas differently. Using season-specific products helps maintain balance and prevent seasonal health issues.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                  <div className="flex justify-center mb-4">
+                    <Sun className="h-10 w-10 text-amber-500" />
+                  </div>
+                  <h4 className="font-semibold text-lg mb-2">Summer (Pitta Season)</h4>
+                  <p className="text-sm text-gray-600">
+                    Focus on cooling, hydrating products to balance increased pitta dosha and prevent heat-related issues.
+                  </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                  <div className="flex justify-center mb-4">
+                    <Leaf className="h-10 w-10 text-green-600" />
+                  </div>
+                  <h4 className="font-semibold text-lg mb-2">Monsoon (Vata-Kapha)</h4>
+                  <p className="text-sm text-gray-600">
+                    Use products that balance moisture while supporting immunity during changing weather.
+                  </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                  <div className="flex justify-center mb-4">
+                    <Snowflake className="h-10 w-10 text-blue-500" />
+                  </div>
+                  <h4 className="font-semibold text-lg mb-2">Winter (Vata Season)</h4>
+                  <p className="text-sm text-gray-600">
+                    Incorporate warming, nourishing products to pacify vata dosha and maintain moisture balance.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -161,7 +516,9 @@ export default function Home() {
                   {benefit.icon}
                   <h3 className="mt-4 text-xl font-semibold text-green-800">{benefit.title}</h3>
                   <p className="mt-2 text-gray-600">{benefit.description}</p>
-                  <Button className="mt-4 rounded-full bg-green-600 hover:bg-green-700 text-sm">Learn More</Button>
+                  <Button className="mt-4 rounded-full bg-green-600 hover:bg-green-700 px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
+                    Learn More
+                  </Button>
                 </div>
               ))}
             </div>
@@ -178,12 +535,15 @@ export default function Home() {
                   Our bestselling Ayurvedic formulations for your daily wellness routine.
                 </p>
               </div>
-              <Link href="/herbal-products" className="text-green-600 hover:text-green-700 flex items-center gap-2 font-medium">
+              <Link
+                href="/herbal-products"
+                className="text-green-600 hover:text-green-700 flex items-center gap-2 font-medium"
+              >
                 View All Products <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
             <div className="relative">
-              <Slider {...settings} className="mb-8">
+              <Slider {...productSliderSettings} className="mb-8">
                 {[
                   {
                     name: "Ashwagandha Root Powder",
@@ -237,7 +597,7 @@ export default function Home() {
                         <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-green-800">{product.price}</span>
-                          <Button size="sm" variant="outline" className="rounded-full">
+                          <Button variant="outline" className="rounded-full px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
                             Add to Cart
                           </Button>
                         </div>
@@ -248,116 +608,22 @@ export default function Home() {
               </Slider>
 
               {/* Add buttons for Featured Products slider */}
-              <div className="flex justify-center gap-4 mt-6">
-                <Button variant="outline" className="rounded-full border-green-600 text-green-700 hover:bg-green-50" onClick={() => router.push('/herbal-products')}>
+              <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-6">
+                <Button
+                  variant="outline"
+                  className="rounded-full border-green-600 text-green-700 hover:bg-green-50 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base"
+                  onClick={() => router.push("/herbal-products")}
+                >
                   View All Products
                 </Button>
-                <Button className="rounded-full bg-green-600 hover:bg-green-700">Shop Now</Button>
-                <Button className="rounded-full bg-amber-600 hover:bg-amber-700">Special Offers</Button>
+                <Button className="rounded-full bg-green-600 hover:bg-green-700 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+                  Shop Now
+                </Button>
+                <Button className="rounded-full bg-amber-600 hover:bg-amber-700 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+                  Special Offers
+                </Button>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Doctor Consultation Section */}
-        <section id="doctors" className="py-16 bg-green-50">
-          <div className="container">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight text-green-900">Expert Ayurvedic Consultations</h2>
-              <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                Schedule a personalized consultation with our certified Ayurvedic doctors to receive tailored wellness
-                recommendations.
-              </p>
-            </div>
-
-            <Tabs defaultValue="doctors" className="w-full">
-              <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
-                <TabsTrigger value="doctors">Our Doctors</TabsTrigger>
-                <TabsTrigger value="appointment">Book Appointment</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="doctors" className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {[
-                    {
-                      name: "Dr. Arjun Sharma",
-                      specialty: "Ayurvedic Medicine",
-                      experience: "15+ years experience",
-                      image: "/team-1.jpg",
-                      bio: "Dr. Sharma specializes in traditional Ayurvedic treatments for chronic conditions and stress management.",
-                    },
-                    {
-                      name: "Dr. Priya Patel",
-                      specialty: "Panchakarma Specialist",
-                      experience: "12+ years experience",
-                      image: "/team-2.jpg",
-                      bio: "Dr. Patel is an expert in detoxification therapies and rejuvenation treatments based on Ayurvedic principles.",
-                    },
-                    {
-                      name: "Dr. Rahul Verma",
-                      specialty: "Ayurvedic Nutrition",
-                      experience: "10+ years experience",
-                      image: "/team-3.jpg",
-                      bio: "Dr. Verma focuses on dietary interventions and herbal supplements to address digestive and metabolic issues.",
-                    },
-                  ].map((doctor, index) => (
-                    <DoctorCard key={index} doctor={doctor} />
-                  ))}
-                </div>
-               
-              </TabsContent>
-
-              <TabsContent value="appointment">
-                <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden">
-                  <div className="grid md:grid-cols-5">
-                    <div className="bg-green-800 text-white p-6 md:col-span-2">
-                      <h3 className="text-xl font-bold mb-4">Consultation Benefits</h3>
-                      <ul className="space-y-4">
-                        <li className="flex items-start gap-3">
-                          <User className="h-5 w-5 text-green-300 mt-0.5 flex-shrink-0" />
-                          <span>Personalized dosha assessment and wellness plan</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Leaf className="h-5 w-5 text-green-300 mt-0.5 flex-shrink-0" />
-                          <span>Custom herbal recommendations for your specific needs</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Calendar className="h-5 w-5 text-green-300 mt-0.5 flex-shrink-0" />
-                          <span>Follow-up consultations to track your progress</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Video className="h-5 w-5 text-green-300 mt-0.5 flex-shrink-0" />
-                          <span>Available in-person or via secure video call</span>
-                        </li>
-                      </ul>
-
-                      <div className="mt-8 pt-6 border-t border-green-700">
-                        <h4 className="font-medium mb-2">Consultation Types:</h4>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span>Initial Consultation (60 min)</span>
-                            <span>$95</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Follow-up Session (30 min)</span>
-                            <span>$55</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Panchakarma Consultation</span>
-                            <span>$120</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-6 md:col-span-3">
-                      <h3 className="text-xl font-bold text-green-900 mb-6">Book Your Consultation</h3>
-                      <AppointmentForm />
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
           </div>
         </section>
 
@@ -401,17 +667,25 @@ export default function Home() {
                   <div className="absolute inset-0 z-20 flex flex-col justify-end p-6">
                     <h3 className="text-xl font-bold">{category.title}</h3>
                     <p className="mt-2 text-gray-200">{category.description}</p>
-                    <div className="flex gap-3 mt-4">
-                      <Button className="bg-white text-green-900 hover:bg-gray-100 w-fit">Explore</Button>
-                      <Button className="bg-amber-500 text-white hover:bg-amber-600 w-fit">Best Sellers</Button>
+                    <div className="flex gap-2 sm:gap-3 mt-4">
+                      <Button className="bg-white text-green-900 hover:bg-gray-100 w-fit px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
+                        Explore
+                      </Button>
+                      <Button className="bg-amber-500 text-white hover:bg-amber-600 w-fit px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
+                        Best Sellers
+                      </Button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="flex justify-center gap-4 mt-10">
-              <Button className="rounded-full bg-white text-green-900 hover:bg-gray-100">View All Categories</Button>
-              <Button className="rounded-full bg-amber-500 hover:bg-amber-600">New Arrivals</Button>
+            <div className="flex justify-center gap-2 sm:gap-4 mt-10">
+              <Button className="rounded-full bg-white text-green-900 hover:bg-gray-100 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+                View All Categories
+              </Button>
+              <Button className="rounded-full bg-amber-500 hover:bg-amber-600 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base">
+                New Arrivals
+              </Button>
             </div>
           </div>
         </section>
@@ -423,15 +697,11 @@ export default function Home() {
               <div>
                 <h2 className="text-3xl font-bold tracking-tight text-green-900">The Ancient Science of Life</h2>
                 <p className="mt-4 text-lg text-gray-600">
-                  Ayurveda, which translates to "knowledge of life," is one of the world's oldest holistic healing
-                  systems. Developed more than 5,000 years ago in India, it's based on the belief that health and
-                  wellness depend on a delicate balance between the mind, body, and spirit.
+                  Ayurveda, which translates to "knowledge of life," is one of the world's oldest holistic healing systems. Developed more than 5,000 years ago in India, it's based on the belief that health and wellness depend on a delicate balance between the mind, body, and spirit.
                 </p>
                 <p className="mt-4 text-lg text-gray-600">
-                  At Ayurveda Haven, we honor this ancient tradition by offering authentic products made according to
-                  traditional methods, using ingredients sourced from their native regions.
+                  At Ayurveda Haven, we honor this ancient tradition by offering authentic products made according to traditional methods, using ingredients sourced from their native regions.
                 </p>
-                
               </div>
               <div className="relative h-[400px] rounded-lg overflow-hidden">
                 <Image
@@ -501,7 +771,33 @@ export default function Home() {
                 </Card>
               ))}
             </div>
-           
+          </div>
+        </section>
+
+        {/* Our Partners Section */}
+        <section className="py-16 bg-white">
+          <div className="container">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tight text-green-900">Our Trusted Partners</h2>
+              <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+                We collaborate with leading Ayurvedic brands to bring you the highest quality products.
+              </p>
+            </div>
+            <Slider {...partnerSliderSettings}>
+              {partners.map((partner, index) => (
+                <div key={index} className="px-4">
+                  <div className="flex justify-center items-center h-24 bg-gray-100 rounded-lg">
+                    <Image
+                      src={partner.logo || "/placeholder.svg"}
+                      alt={`${partner.name} Logo`}
+                      width={150}
+                      height={60}
+                      className="object-contain h-16 w-auto"
+                    />
+                  </div>
+                </div>
+              ))}
+            </Slider>
           </div>
         </section>
 
@@ -511,21 +807,21 @@ export default function Home() {
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold tracking-tight">Join Our Ayurvedic Journey</h2>
               <p className="mt-4 text-lg text-gray-200">
-                Subscribe to receive Ayurvedic wellness tips, exclusive offers, and updates on new products and
-                consultations.
+                Subscribe to receive Ayurvedic wellness tips, exclusive offers, and updates on new products and consultations.
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <div className="mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 max-w-md mx-auto">
                 <Input
                   type="email"
                   placeholder="Enter your email"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-300"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-300 h-10 sm:h-12"
                 />
-                <Button className="bg-white text-green-900 hover:bg-gray-100">Subscribe</Button>
+                <Button className="rounded-full bg-white text-green-900 hover:bg-gray-100 px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base h-10 sm:h-12">
+                  Subscribe
+                </Button>
               </div>
               <p className="mt-4 text-sm text-gray-300">
                 By subscribing, you agree to our Privacy Policy and consent to receive our marketing emails.
               </p>
-
             </div>
           </div>
         </section>
@@ -539,8 +835,7 @@ export default function Home() {
                 <span className="text-xl font-bold">Ayurveda Haven</span>
               </div>
               <p className="text-gray-300 mt-2">
-                Authentic Ayurvedic products and expert consultations for modern wellness, sourced directly from trusted
-                suppliers.
+                Authentic Ayurvedic products and expert consultations for modern wellness, sourced directly from trusted suppliers.
               </p>
             </div>
             <div>
@@ -606,22 +901,26 @@ export default function Home() {
                 <p className="mt-4">info@ayurvedahaven.com</p>
                 <p>+1 (555) 123-4567</p>
               </address>
-              <div className="mt-4 flex gap-3">
-                <Button className="rounded-full bg-green-600 hover:bg-green-700 text-sm">Email Us</Button>
-                <Button className="rounded-full bg-blue-600 hover:bg-blue-700 text-sm">Live Chat</Button>
+              <div className="mt-4 flex gap-2 sm:gap-3">
+                <Button className="rounded-full bg-green-600 hover:bg-green-700 px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
+                  Email Us
+                </Button>
+                <Button className="rounded-full bg-blue-600 hover:bg-blue-700 px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
+                  Live Chat
+                </Button>
               </div>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-green-800 text-center text-gray-400 text-sm">
             <p>© {new Date().getFullYear()} Ayurveda Haven. All rights reserved.</p>
-            <div className="flex justify-center gap-4 mt-4">
-              <Button variant="outline" className="rounded-full text-sm">
+            <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-4">
+              <Button variant="outline" className="rounded-full px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
                 Privacy Policy
               </Button>
-              <Button variant="outline" className="rounded-full text-sm">
+              <Button variant="outline" className="rounded-full px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
                 Terms of Service
               </Button>
-              <Button variant="outline" className="rounded-full text-sm">
+              <Button variant="outline" className="rounded-full px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm">
                 Sitemap
               </Button>
             </div>
